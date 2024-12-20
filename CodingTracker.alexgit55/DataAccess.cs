@@ -45,4 +45,23 @@ internal class DataAccess
             connection.Execute(insertRecordQuery, new { record.DateStart, record.DateEnd });
         }
     }
+
+    internal IEnumerable<CodingSession> GetAllRecords()
+    {
+        using (var connection = new SqliteConnection(ConnectionString))
+        {
+            connection.Open();
+
+            string selectQuery = "SELECT * FROM records";
+
+            var records = connection.Query<CodingSession>(selectQuery);
+
+            foreach (var record in records)
+            {
+                record.Duration = record.DateEnd - record.DateStart;
+            }
+
+            return records;
+        }
+    }
 }
