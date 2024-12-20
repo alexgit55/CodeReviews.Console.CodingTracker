@@ -6,13 +6,8 @@ namespace CodingTracker.alexgit55
     {
         static void Main(string[] args)
         {
-            IConfiguration configuration = new ConfigurationBuilder()
-            .AddJsonFile("C:\\Scripts\\GitHub\\alexgit55\\CodeReviews.Console.CodingTracker\\CodingTracker.alexgit55\\appsettings.json")
-            .Build();
 
-            string connectionString = configuration.GetSection("ConnectionStrings")["DefaultConnection"];
-
-            var dataAccess = new DataAccess(connectionString);
+            var dataAccess = new DataAccess();
 
             dataAccess.CreateDatabase();
 
