@@ -130,6 +130,7 @@ internal class UserInterface
         if (AnsiConsole.Prompt(new ConfirmationPrompt("Are you sure you want to update this session?")))
         {
             var dateInputs = GetDateInputs();
+            session.Id = id;
             session.DateStart = dateInputs[0];
             session.DateEnd = dateInputs[1];
             dataAccess.UpdateSession(session);
@@ -150,7 +151,7 @@ internal class UserInterface
 
         foreach (var session in sessions)
         {
-            table.AddRow(session.Id.ToString(), session.DateStart.ToString(), session.DateEnd.ToString(), $"{session.Duration.TotalHours} hours {session.Duration.TotalMinutes % 60} minutes");
+            table.AddRow(session.Id.ToString(), session.DateStart.ToString(), session.DateEnd.ToString(), $"{session.Duration.Hours} hours {session.Duration.Minutes} minutes");
         }
 
         AnsiConsole.Write(table);
