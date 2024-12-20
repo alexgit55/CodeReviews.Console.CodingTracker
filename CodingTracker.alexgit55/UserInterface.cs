@@ -46,7 +46,7 @@ internal class UserInterface
                     break;
             }
 
-            AnsiConsole.MarkupLine(menuMessage);
+            AnsiConsole.MarkupLine($"\n{menuMessage}\n");
             Console.ReadKey();
             Console.Clear();
         }
@@ -88,12 +88,70 @@ internal class UserInterface
 
     private static void DeleteSession()
     {
-        throw new NotImplementedException();
+        var dataAccess = new DataAccess();
+        var sessions = dataAccess.GetAllSessions();
+        ViewSessions(sessions);
+
+        var id = GetNumber("Enter the Id of the session you want to delete. Or enter 0 to return to main menu: ");
+
+        if (id == 0) return;
+
+        if (!AnsiConsole.Confirm("Are you sure you want to delete this session?"))
+            return;
+
+        var result = dataAccess.DeleteSession(id);
+
+        var message = result == 1 ? $"Session with id {id} has been deleted." : $"Session with id {id} not found";
+
+        AnsiConsole.MarkupLine($"\n{message}\n");
+
     }
 
     private static void UpdateSession()
     {
-        throw new NotImplementedException();
+        var dataAccess = new DataAccess();
+        var sessions = dataAccess.GetAllSessions();
+        var session = new CodingSession();
+        ViewSessions(sessions);
+
+        var id = GetNumber("Enter the Id of the session you want to update. Or enter 0 to return to main menu: ");
+
+        if (id == 0) return;
+
+        try
+        {
+            session = sessions.Where(s => s.Id == id).Single();
+        }
+        catch (InvalidOperationException)
+        {
+            AnsiConsole.MarkupLine($"\nSession with id {id} not found\n");
+            return;
+        }
+
+        var dateInputs = GetDateInputs();
+
+        session.DateStart = dateInputs[0];
+        session.DateEnd = dateInputs[1];
+
+        var result = dataAccess.UpdateSession(session);
+
+        var message = result == 1 ? $"Session with id {id} has been udated" : $"Session with id {id} not found";
+
+        AnsiConsole.MarkupLine($"\n{message}\n");
+    }
+
+    private static int GetNumber(string message)
+    {
+        var number = AnsiConsole.Prompt(
+                new TextPrompt<int>(message)
+                    .Validate(number =>
+                    {
+                        if (number < 0)
+                            return ValidationResult.Error("[red]Please enter a non-negative number[/]");
+                        return ValidationResult.Success();
+                    })
+        );
+        return number;
     }
 
     private static void ViewSessions(IEnumerable<CodingSession> sessions)

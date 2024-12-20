@@ -85,5 +85,35 @@ internal class DataAccess
         }
     }
 
+    internal int UpdateSession(CodingSession session)
+    {
+        using (var connection = new SqliteConnection(ConnectionString))
+        {
+            connection.Open();
 
+            string updateQuery = @"
+            UPDATE sessions
+            SET DateStart = @DateStart, DateEnd = @DateEnd
+            WHERE Id = @Id";
+
+            int rowsAffected=connection.Execute(updateQuery, new { session.DateStart, session.DateEnd, session.Id });
+
+            return rowsAffected;
+        }
+    }
+
+    internal int DeleteSession(int id)
+    {
+        using (var connection = new SqliteConnection(ConnectionString))
+        {
+            connection.Open();
+            string deleteQuery = @"
+            DELETE FROM sessions
+            WHERE Id = @Id";
+            int rowsAffected=connection.Execute(deleteQuery, new { Id = id });
+
+            return rowsAffected;
+        }
+
+    }
 }
