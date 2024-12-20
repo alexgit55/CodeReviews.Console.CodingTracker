@@ -102,7 +102,7 @@ internal class DataAccess
         }
     }
 
-    internal int DeleteSession(int id)
+    internal void DeleteSession(int id)
     {
         using (var connection = new SqliteConnection(ConnectionString))
         {
@@ -110,9 +110,7 @@ internal class DataAccess
             string deleteQuery = @"
             DELETE FROM sessions
             WHERE Id = @Id";
-            int rowsAffected=connection.Execute(deleteQuery, new { Id = id });
-
-            return rowsAffected;
+            connection.Execute(deleteQuery, new { Id = id });
         }
 
     }

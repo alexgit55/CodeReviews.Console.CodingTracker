@@ -1,5 +1,4 @@
 ﻿using Spectre.Console;
-using System.Globalization;
 using static CodingTracker.alexgit55.Enums;
 
 namespace CodingTracker.alexgit55;
@@ -9,7 +8,7 @@ internal class UserInterface
     internal static void MainMenu()
     {
         var isMenuRunning = true;
-        var menuMessage= "Press any key to continue";
+        var menuMessage = "Press any key to continue";
 
         while (isMenuRunning)
         {
@@ -57,31 +56,13 @@ internal class UserInterface
 
         if (startDateInput == "0") MainMenu();
 
-        DateTime startDate;
-        while (!DateTime.TryParseExact(startDateInput, "dd-MM-yy HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate))
-        {
-            startDateInput = AnsiConsole.Ask<string>("\n\nInvalid date. Format: dd-mm-yy hh:mm (24 hour clock). PLease try again\n\n");
-        }
+        var startDate = Validation.ValidateStartDate(startDateInput);
 
         var endDateInput = AnsiConsole.Ask<string>("Input End Date with the format: dd-mm-yy hh:mm (24 hour clock). Or enter 0 to return to main menu.");
 
         if (endDateInput == "0") MainMenu();
 
-        DateTime endDate;
-        while (!DateTime.TryParseExact(endDateInput, "dd-MM-yy HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out endDate))
-        {
-            endDateInput = AnsiConsole.Ask<string>("\n\nInvalid date. Format: dd-mm-yy hh:mm (24 hour clock). PLease try again\n\n");
-        }
-
-        while (startDate > endDate)
-        {
-            endDateInput = AnsiConsole.Ask<string>("\n\nEnd date can't be before start date. Please try again\n\n");
-
-            while (!DateTime.TryParseExact(endDateInput, "dd-MM-yy HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out endDate))
-            {
-                endDateInput = AnsiConsole.Ask<string>("\n\nInvalid date. Format: dd-mm-yy hh:mm (24 hour clock). PLease try again\n\n");
-            }
-        }
+        var endDate = Validation.ValidateEndDate(startDate, endDateInput);
 
         return [startDate, endDate];
     }
@@ -92,16 +73,35 @@ internal class UserInterface
         var sessions = dataAccess.GetAllSessions();
         ViewSessions(sessions);
 
-        var id = GetNumber("Enter the Id of the session you want to delete. Or enter 0 to return to main menu: ");
+        bool validSession, deleteSession=false;
+        string message = "[yellow]No session will be deleted.[/]";
+        var id = 0;
 
-        if (id == 0) return;
+        do {
 
-        if (!AnsiConsole.Confirm("Are you sure you want to delete this session?"))
-            return;
+            id = GetNumber("Enter the Id of the session you want to delete. Or enter 0 to return to main menu: ");
 
-        var result = dataAccess.DeleteSession(id);
+            if (id == 0)
+            {
+                deleteSession = false;
+                break;
+            }
 
-        var message = result == 1 ? $"Session with id {id} has been deleted." : $"Session with id {id} not found";
+            validSession = Validation.ValidateSessionExists(sessions, id);
+
+            if (validSession) break;
+
+            AnsiConsole.MarkupLine($"\nSession with id {id} not found.\n");
+
+        } while (!validSession);
+
+        if (id>0) deleteSession = AnsiConsole.Prompt(new ConfirmationPrompt("Are you sure you want to delete this session?"));
+
+        if (deleteSession)
+        {
+            dataAccess.DeleteSession(id);
+            message = $"Session with id {id} has been deleted.";
+        }
 
         AnsiConsole.MarkupLine($"\n{message}\n");
 
@@ -181,4 +181,4 @@ internal class UserInterface
         var dataAccess = new DataAccess();
         dataAccess.InsertSession(session);
     }
-}   
+}
