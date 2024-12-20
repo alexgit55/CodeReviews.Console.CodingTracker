@@ -6,17 +6,17 @@ internal class Enums
 {
     internal enum  MainMenuChoices
     {
-        [Display(Name = "Add Record")]
-        AddRecord,
+        [Display(Name = "Add Session")]
+        AddSession,
 
-        [Display(Name = "View Records")]
-        ViewRecords,
+        [Display(Name = "View Sessions")]
+        ViewSessions,
 
-        [Display(Name = "Delete Record")]
-        DeleteRecord,
+        [Display(Name = "Delete Session")]
+        DeleteSession,
 
-        [Display(Name = "Update Record")]
-        UpdateRecord,
+        [Display(Name = "Update Session")]
+        UpdateSession,
 
         Exit
     }

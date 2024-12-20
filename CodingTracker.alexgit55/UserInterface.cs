@@ -17,28 +17,28 @@ internal class UserInterface
                    new SelectionPrompt<MainMenuChoices>()
                     .Title("What would you like to do?")
                     .AddChoices(
-                       MainMenuChoices.AddRecord,
-                       MainMenuChoices.ViewRecords,
-                       MainMenuChoices.UpdateRecord,
-                       MainMenuChoices.DeleteRecord,
+                       MainMenuChoices.AddSession,
+                       MainMenuChoices.ViewSessions,
+                       MainMenuChoices.UpdateSession,
+                       MainMenuChoices.DeleteSession,
                        MainMenuChoices.Exit)
                     );
 
             switch (usersChoice)
             {
-                case MainMenuChoices.AddRecord:
-                    AddRecord();
+                case MainMenuChoices.AddSession:
+                    AddSession();
                     break;
-                case MainMenuChoices.ViewRecords:
+                case MainMenuChoices.ViewSessions:
                     var dataAccess = new DataAccess();
-                    var records = dataAccess.GetAllRecords();
-                    ViewRecords(records);
+                    var sessions = dataAccess.GetAllSessions();
+                    ViewSessions(sessions);
                     break;
-                case MainMenuChoices.UpdateRecord:
-                    UpdateRecord();
+                case MainMenuChoices.UpdateSession:
+                    UpdateSession();
                     break;
-                case MainMenuChoices.DeleteRecord:
-                    DeleteRecord();
+                case MainMenuChoices.DeleteSession:
+                    DeleteSession();
                     break;
                 case MainMenuChoices.Exit:
                     isMenuRunning = false;
@@ -86,17 +86,17 @@ internal class UserInterface
         return [startDate, endDate];
     }
 
-    private static void DeleteRecord()
+    private static void DeleteSession()
     {
         throw new NotImplementedException();
     }
 
-    private static void UpdateRecord()
+    private static void UpdateSession()
     {
         throw new NotImplementedException();
     }
 
-    private static void ViewRecords(IEnumerable<CodingSession> records)
+    private static void ViewSessions(IEnumerable<CodingSession> sessions)
     {
         var table = new Table();
         table.AddColumn("Id");
@@ -104,23 +104,23 @@ internal class UserInterface
         table.AddColumn("End Date");
         table.AddColumn("Duration");
 
-        foreach (var record in records)
+        foreach (var session in sessions)
         {
-            table.AddRow(record.Id.ToString(), record.DateStart.ToString(), record.DateEnd.ToString(), $"{record.Duration.TotalHours} hours {record.Duration.TotalMinutes % 60} minutes");
+            table.AddRow(session.Id.ToString(), session.DateStart.ToString(), session.DateEnd.ToString(), $"{session.Duration.TotalHours} hours {session.Duration.TotalMinutes % 60} minutes");
         }
 
         AnsiConsole.Write(table);
     }
 
-    private static void AddRecord()
+    private static void AddSession()
     {
-        CodingSession record = new();
+        CodingSession session = new();
 
         var dateInputs = GetDateInputs();
-        record.DateStart = dateInputs[0];
-        record.DateEnd = dateInputs[1];
+        session.DateStart = dateInputs[0];
+        session.DateEnd = dateInputs[1];
 
         var dataAccess = new DataAccess();
-        dataAccess.InsertRecord(record);
+        dataAccess.InsertSession(session);
     }
 }   

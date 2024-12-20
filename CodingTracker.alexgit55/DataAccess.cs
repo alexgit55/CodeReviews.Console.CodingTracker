@@ -23,7 +23,7 @@ internal class DataAccess
             connection.Open();
 
             string createTableQuery = @"
-            CREATE TABLE IF NOT EXISTS records (
+            CREATE TABLE IF NOT EXISTS sessions (
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
                 DateStart TEXT NOT NULL,
                 DateEnd TEXT NOT NULL
@@ -33,35 +33,57 @@ internal class DataAccess
         }
     }
 
-    internal void InsertRecord(CodingSession record)
+    internal void InsertSession(CodingSession session)
     //Inserts a coding session into the database
     {
         using (var connection = new SqliteConnection(ConnectionString))
         {
             connection.Open();
             string insertRecordQuery = @"
-            INSERT INTO records (DateStart, DateEnd)
+            INSERT INTO sessions (DateStart, DateEnd)
             VALUES (@DateStart, @DateEnd)";
-            connection.Execute(insertRecordQuery, new { record.DateStart, record.DateEnd });
+            connection.Execute(insertRecordQuery, new { session.DateStart, session.DateEnd });
         }
     }
 
-    internal IEnumerable<CodingSession> GetAllRecords()
+    internal IEnumerable<CodingSession> GetAllSessions()
     {
         using (var connection = new SqliteConnection(ConnectionString))
         {
             connection.Open();
 
-            string selectQuery = "SELECT * FROM records";
+            string selectQuery = "SELECT * FROM sessions";
 
-            var records = connection.Query<CodingSession>(selectQuery);
+            var sessions = connection.Query<CodingSession>(selectQuery);
 
-            foreach (var record in records)
+            foreach (var session in sessions)
             {
-                record.Duration = record.DateEnd - record.DateStart;
+                session.Duration = session.DateEnd - session.DateStart;
             }
 
-            return records;
+            return sessions;
         }
     }
+
+    internal void BulkInsertSessions(List<CodingSession> sessions)
+    {
+        using (var connection = new SqliteConnection(ConnectionString))
+        {
+            connection.Open();
+
+            // Prepare the query with placeholders for multiple sessions
+            string insertQuery = @"
+            INSERT INTO sessions (DateStart, DateEnd)
+            VALUES (@DateStart, @DateEnd)";
+
+            // Execute the query for each session in the collection
+            connection.Execute(insertQuery, sessions.Select(session => new
+            {
+                session.DateStart,
+                session.DateEnd
+            }));
+        }
+    }
+
+
 }
