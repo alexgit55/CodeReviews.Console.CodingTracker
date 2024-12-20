@@ -32,3 +32,6 @@ Console based CRUD application to track coding hours. Developed using C# and SQL
 - If no database/table exits when starting the program, it will create one automatically.
 
 ## Console Based UI
+
+- This application features a text based menu and navigation system to access its function
+- It utilizes the Spectre.Console library to generate the main menu and display text and sessions in the program
