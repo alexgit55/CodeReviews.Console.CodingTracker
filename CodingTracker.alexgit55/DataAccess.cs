@@ -85,7 +85,7 @@ internal class DataAccess
         }
     }
 
-    internal int UpdateSession(CodingSession session)
+    internal void UpdateSession(CodingSession session)
     {
         using (var connection = new SqliteConnection(ConnectionString))
         {
@@ -96,9 +96,7 @@ internal class DataAccess
             SET DateStart = @DateStart, DateEnd = @DateEnd
             WHERE Id = @Id";
 
-            int rowsAffected=connection.Execute(updateQuery, new { session.DateStart, session.DateEnd, session.Id });
-
-            return rowsAffected;
+            connection.Execute(updateQuery, new { session.DateStart, session.DateEnd, session.Id });
         }
     }
 

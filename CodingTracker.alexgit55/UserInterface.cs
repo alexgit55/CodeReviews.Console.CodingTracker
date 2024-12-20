@@ -73,38 +73,23 @@ internal class UserInterface
         var sessions = dataAccess.GetAllSessions();
         ViewSessions(sessions);
 
-        bool validSession, deleteSession=false;
-        string message = "[yellow]No session will be deleted.[/]";
-        var id = 0;
+        var id = GetNumber("Enter the Id of the session you want to delete. Or enter 0 to return to main menu: ");
 
-        do {
+        if (id == 0) return;
 
-            id = GetNumber("Enter the Id of the session you want to delete. Or enter 0 to return to main menu: ");
-
-            if (id == 0)
-            {
-                deleteSession = false;
-                break;
-            }
-
-            validSession = Validation.ValidateSessionExists(sessions, id);
-
-            if (validSession) break;
-
-            AnsiConsole.MarkupLine($"\nSession with id {id} not found.\n");
-
-        } while (!validSession);
-
-        if (id>0) deleteSession = AnsiConsole.Prompt(new ConfirmationPrompt("Are you sure you want to delete this session?"));
-
-        if (deleteSession)
+        if (!Validation.ValidateSessionExists(sessions, id))
         {
-            dataAccess.DeleteSession(id);
-            message = $"Session with id {id} has been deleted.";
+            AnsiConsole.MarkupLine($"\nSession with id {id} not found.\n");
+            return;
         }
 
-        AnsiConsole.MarkupLine($"\n{message}\n");
-
+        if (AnsiConsole.Prompt(new ConfirmationPrompt("Are you sure you want to delete this session?")))
+        {
+            dataAccess.DeleteSession(id);
+            AnsiConsole.MarkupLine($"\nSession with id {id} has been deleted.\n");
+        }
+        else
+            AnsiConsole.MarkupLine("\n[yellow]No session will be deleted.[/]\n");
     }
 
     private static void UpdateSession()
@@ -118,26 +103,22 @@ internal class UserInterface
 
         if (id == 0) return;
 
-        try
+        if (!Validation.ValidateSessionExists(sessions, id))
         {
-            session = sessions.Where(s => s.Id == id).Single();
-        }
-        catch (InvalidOperationException)
-        {
-            AnsiConsole.MarkupLine($"\nSession with id {id} not found\n");
+            AnsiConsole.MarkupLine($"\nSession with id {id} not found.\n");
             return;
         }
 
-        var dateInputs = GetDateInputs();
-
-        session.DateStart = dateInputs[0];
-        session.DateEnd = dateInputs[1];
-
-        var result = dataAccess.UpdateSession(session);
-
-        var message = result == 1 ? $"Session with id {id} has been udated" : $"Session with id {id} not found";
-
-        AnsiConsole.MarkupLine($"\n{message}\n");
+        if (AnsiConsole.Prompt(new ConfirmationPrompt("Are you sure you want to update this session?")))
+        {
+            var dateInputs = GetDateInputs();
+            session.DateStart = dateInputs[0];
+            session.DateEnd = dateInputs[1];
+            dataAccess.UpdateSession(session);
+            AnsiConsole.MarkupLine($"\nSession with id {id} has been updated.\n");
+        }
+        else
+            AnsiConsole.MarkupLine("\n[yellow]No session will be updated.[/]\n");
     }
 
     private static int GetNumber(string message)
