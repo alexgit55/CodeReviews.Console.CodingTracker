@@ -1,4 +1,6 @@
-﻿using Spectre.Console;
+﻿// Purpose: Contains methods for validating user input.
+
+using Spectre.Console;
 using System.Globalization;
 
 namespace CodingTracker.alexgit55;

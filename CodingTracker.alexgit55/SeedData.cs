@@ -1,4 +1,6 @@
-﻿namespace CodingTracker.alexgit55;
+﻿// Purpose: This file contains the SeedData class which is used to seed the database with records for testing purposes.
+
+namespace CodingTracker.alexgit55;
 
 internal static class SeedData
 {

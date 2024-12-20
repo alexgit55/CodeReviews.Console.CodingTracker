@@ -1,4 +1,6 @@
-﻿using Dapper;
+﻿// Purpose: Contains the DataAccess class which is responsible for interacting with the database.
+
+using Dapper;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 
@@ -47,6 +49,7 @@ internal class DataAccess
     }
 
     internal IEnumerable<CodingSession> GetAllSessions()
+    //Returns all coding sessions from the database
     {
         using (var connection = new SqliteConnection(ConnectionString))
         {
@@ -66,6 +69,7 @@ internal class DataAccess
     }
 
     internal void BulkInsertSessions(List<CodingSession> sessions)
+    // Inserts multiple sessions into the database
     {
         using (var connection = new SqliteConnection(ConnectionString))
         {
@@ -86,6 +90,7 @@ internal class DataAccess
     }
 
     internal void UpdateSession(CodingSession session)
+    // Updates a coding session in the database
     {
         using (var connection = new SqliteConnection(ConnectionString))
         {
@@ -101,6 +106,7 @@ internal class DataAccess
     }
 
     internal void DeleteSession(int id)
+    // Deletes a coding session from the database
     {
         using (var connection = new SqliteConnection(ConnectionString))
         {

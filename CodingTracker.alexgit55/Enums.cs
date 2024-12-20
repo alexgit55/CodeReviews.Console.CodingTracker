@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿// Purpose: Contains the Enums used in the program.
+
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace CodingTracker.alexgit55;
