@@ -51,7 +51,18 @@ internal class Validation
             AnsiConsole.MarkupLine($"\nSession with id {id} not found\n");
             return false;
         }
-
-
+    }
+    internal static int GetNumber(string message)
+    {
+        var number = AnsiConsole.Prompt(
+                new TextPrompt<int>(message)
+                    .Validate(number =>
+                    {
+                        if (number < 0)
+                            return ValidationResult.Error("[red]Please enter a non-negative number[/]");
+                        return ValidationResult.Success();
+                    })
+        );
+        return number;
     }
 }

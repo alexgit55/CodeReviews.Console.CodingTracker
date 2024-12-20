@@ -73,7 +73,7 @@ internal class UserInterface
         var sessions = dataAccess.GetAllSessions();
         ViewSessions(sessions);
 
-        var id = GetNumber("Enter the Id of the session you want to delete. Or enter 0 to return to main menu: ");
+        var id = Validation.GetNumber("Enter the Id of the session you want to delete. Or enter 0 to return to main menu: ");
 
         if (id == 0) return;
 
@@ -99,7 +99,7 @@ internal class UserInterface
         var session = new CodingSession();
         ViewSessions(sessions);
 
-        var id = GetNumber("Enter the Id of the session you want to update. Or enter 0 to return to main menu: ");
+        var id = Validation.GetNumber("Enter the Id of the session you want to update. Or enter 0 to return to main menu: ");
 
         if (id == 0) return;
 
@@ -119,20 +119,6 @@ internal class UserInterface
         }
         else
             AnsiConsole.MarkupLine("\n[yellow]No session will be updated.[/]\n");
-    }
-
-    private static int GetNumber(string message)
-    {
-        var number = AnsiConsole.Prompt(
-                new TextPrompt<int>(message)
-                    .Validate(number =>
-                    {
-                        if (number < 0)
-                            return ValidationResult.Error("[red]Please enter a non-negative number[/]");
-                        return ValidationResult.Success();
-                    })
-        );
-        return number;
     }
 
     private static void ViewSessions(IEnumerable<CodingSession> sessions)
