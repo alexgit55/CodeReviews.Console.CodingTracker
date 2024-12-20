@@ -12,6 +12,10 @@ internal class UserInterface
 
         while (isMenuRunning)
         {
+            
+            DisplayHeader("Welcome to the Coding Tracker!");
+
+
             var usersChoice = AnsiConsole.Prompt(
                    new SelectionPrompt<MainMenuChoices>()
                     .Title("What would you like to do?")
@@ -26,17 +30,21 @@ internal class UserInterface
             switch (usersChoice)
             {
                 case MainMenuChoices.AddSession:
+                    DisplayHeader("Add a Coding Session");
                     AddSession();
                     break;
                 case MainMenuChoices.ViewSessions:
+                    DisplayHeader("View Coding Sessions");
                     var dataAccess = new DataAccess();
                     var sessions = dataAccess.GetAllSessions();
                     ViewSessions(sessions);
                     break;
                 case MainMenuChoices.UpdateSession:
+                    DisplayHeader("Update a Coding Session");
                     UpdateSession();
                     break;
                 case MainMenuChoices.DeleteSession:
+                    DisplayHeader("Delete a Coding Session");
                     DeleteSession();
                     break;
                 case MainMenuChoices.Exit:
@@ -50,6 +58,15 @@ internal class UserInterface
             Console.Clear();
         }
     }
+    
+    private static void DisplayHeader(string message)
+    {
+        Console.Clear();
+        AnsiConsole.MarkupLine("[bold green]------------------------------[/]");
+        AnsiConsole.MarkupLine($"[bold green]{message}[/]");
+        AnsiConsole.MarkupLine("[bold green]------------------------------[/]\n");
+    }
+
     private static DateTime[] GetDateInputs()
     {
         var startDateInput = AnsiConsole.Ask<string>("Input Start Date with the format: dd-mm-yy hh:mm (24 hour clock). Or enter 0 to return to main menu.");
@@ -69,6 +86,7 @@ internal class UserInterface
 
     private static void DeleteSession()
     {
+
         var dataAccess = new DataAccess();
         var sessions = dataAccess.GetAllSessions();
         ViewSessions(sessions);
@@ -93,7 +111,7 @@ internal class UserInterface
     }
 
     private static void UpdateSession()
-    {
+    { 
         var dataAccess = new DataAccess();
         var sessions = dataAccess.GetAllSessions();
         var session = new CodingSession();
@@ -123,6 +141,7 @@ internal class UserInterface
 
     private static void ViewSessions(IEnumerable<CodingSession> sessions)
     {
+
         var table = new Table();
         table.AddColumn("Id");
         table.AddColumn("Start Date");
