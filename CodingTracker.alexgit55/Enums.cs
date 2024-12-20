@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace CodingTracker.alexgit55;
 
@@ -6,16 +7,19 @@ internal class Enums
 {
     internal enum  MainMenuChoices
     {
-        [Display(Name = "Add Session")]
+        [Description("Add Session")]
         AddSession,
 
-        [Display(Name = "View Sessions")]
+        [Description("View Sessions")]
         ViewSessions,
 
-        [Display(Name = "Delete Session")]
+        [Description("Start Coding Session")]
+        StartSession,
+
+        [Description("Delete Session")]
         DeleteSession,
 
-        [Display(Name = "Update Session")]
+        [Description("Update Session")]
         UpdateSession,
 
         Exit

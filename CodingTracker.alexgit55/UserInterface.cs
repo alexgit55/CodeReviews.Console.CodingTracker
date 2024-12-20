@@ -21,6 +21,7 @@ internal class UserInterface
                     .Title("What would you like to do?")
                     .AddChoices(
                        MainMenuChoices.AddSession,
+                       MainMenuChoices.StartSession,
                        MainMenuChoices.ViewSessions,
                        MainMenuChoices.UpdateSession,
                        MainMenuChoices.DeleteSession,
@@ -32,6 +33,10 @@ internal class UserInterface
                 case MainMenuChoices.AddSession:
                     DisplayHeader("Add a Coding Session");
                     AddSession();
+                    break;
+                case MainMenuChoices.StartSession:
+                    DisplayHeader("Start a Coding Session");
+                    StartSession();
                     break;
                 case MainMenuChoices.ViewSessions:
                     DisplayHeader("View Coding Sessions");
@@ -49,6 +54,7 @@ internal class UserInterface
                     break;
                 case MainMenuChoices.Exit:
                     isMenuRunning = false;
+                    DisplayHeader("Thank you for using the Coding Tracker!");
                     menuMessage = "Goodbye!";
                     break;
             }
@@ -167,5 +173,36 @@ internal class UserInterface
 
         var dataAccess = new DataAccess();
         dataAccess.InsertSession(session);
+    }
+
+    private static void StartSession()
+    {
+        AnsiConsole.MarkupLine("This will start a live coding session and will record the total time afterwards.\n");
+
+        AnsiConsole.MarkupLine("Press any key to start the session.");
+        Console.ReadKey();
+        var continueSession = true;
+        var startTime = DateTime.Now;
+
+        while (continueSession)
+        {
+            DisplayHeader("Coding Session in Progress");
+            continueSession = AnsiConsole.Prompt(new ConfirmationPrompt("Continue coding session?"));
+        }
+
+        var endTime = DateTime.Now;
+
+        AnsiConsole.MarkupLine($"Session started at {startTime} and ended at {endTime}.");
+
+        CodingSession session = new()
+        {
+            DateStart = startTime,
+            DateEnd = endTime
+        };
+
+        var dataAccess = new DataAccess();
+        dataAccess.InsertSession(session);
+
+
     }
 }
