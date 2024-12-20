@@ -48,7 +48,6 @@ internal class Validation
         }
         catch (InvalidOperationException)
         {
-            AnsiConsole.MarkupLine($"\nSession with id {id} not found\n");
             return false;
         }
     }

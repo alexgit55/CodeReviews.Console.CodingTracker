@@ -11,8 +11,6 @@ namespace CodingTracker.alexgit55
 
             dataAccess.CreateDatabase();
 
-            //SeedData.SeedRecords(10);
-
             UserInterface.MainMenu();
         }
     }

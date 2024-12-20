@@ -97,7 +97,7 @@ internal class UserInterface
 
         if (!Validation.ValidateSessionExists(sessions, id))
         {
-            AnsiConsole.MarkupLine($"\nSession with id {id} not found.\n");
+            AnsiConsole.MarkupLine($"\n[red]Session with id {id} not found.[/]\n");
             return;
         }
 
@@ -123,7 +123,7 @@ internal class UserInterface
 
         if (!Validation.ValidateSessionExists(sessions, id))
         {
-            AnsiConsole.MarkupLine($"\nSession with id {id} not found.\n");
+            AnsiConsole.MarkupLine($"\n[red]Session with id {id} not found.[/]\n");
             return;
         }
 
