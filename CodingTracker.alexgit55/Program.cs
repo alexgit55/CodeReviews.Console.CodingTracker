@@ -15,11 +15,15 @@ namespace CodingTracker.alexgit55
         static void Main(string[] args)
         {
 
+
             var dataAccess = new DataAccess();
 
             dataAccess.CreateDatabase();
 
+            //SeedData.SeedRecords(20);
+
             UserInterface.MainMenu();
+
         }
     }
 }

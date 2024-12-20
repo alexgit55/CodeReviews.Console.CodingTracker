@@ -83,15 +83,11 @@ internal class UserInterface
     private static DateTime[] GetDateInputs()
     // This method prompts the user to input a start date and an end date for a coding session.
     {
-        var startDateInput = AnsiConsole.Ask<string>("Input Start Date with the format: dd-mm-yy hh:mm (24 hour clock). Or enter 0 to return to main menu.");
-
-        if (startDateInput == "0") MainMenu();
+        var startDateInput = AnsiConsole.Ask<string>("Input Start Date with the format: dd-mm-yy hh:mm (24 hour clock): ");
 
         var startDate = Validation.ValidateStartDate(startDateInput);
 
-        var endDateInput = AnsiConsole.Ask<string>("Input End Date with the format: dd-mm-yy hh:mm (24 hour clock). Or enter 0 to return to main menu.");
-
-        if (endDateInput == "0") MainMenu();
+        var endDateInput = AnsiConsole.Ask<string>("Input End Date with the format: dd-mm-yy hh:mm (24 hour clock): ");
 
         var endDate = Validation.ValidateEndDate(startDate, endDateInput);
 
@@ -117,7 +113,7 @@ internal class UserInterface
             return;
         }
 
-        if (AnsiConsole.Prompt(new ConfirmationPrompt("Are you sure you want to delete this session?")))
+        if (AnsiConsole.Prompt(new ConfirmationPrompt($"Are you sure you want to delete session [green]{id}[/]")))
         {
             dataAccess.DeleteSession(id);
             AnsiConsole.MarkupLine($"\nSession with id {id} has been deleted.\n");
@@ -146,12 +142,13 @@ internal class UserInterface
             return;
         }
 
-        if (AnsiConsole.Prompt(new ConfirmationPrompt("Are you sure you want to update this session?")))
+        if (AnsiConsole.Prompt(new ConfirmationPrompt($"Are you sure you want to update session [green]{id}[/]?")))
         {
             var dateInputs = GetDateInputs();
             session.Id = id;
             session.DateStart = dateInputs[0];
             session.DateEnd = dateInputs[1];
+            session.CalculateDuration();
             dataAccess.UpdateSession(session);
             AnsiConsole.MarkupLine($"\nSession with id {id} has been updated.\n");
         }
@@ -171,7 +168,7 @@ internal class UserInterface
 
         foreach (var session in sessions)
         {
-            table.AddRow(session.Id.ToString(), session.DateStart.ToString(), session.DateEnd.ToString(), $"{session.Duration.Hours} hours {session.Duration.Minutes} minutes");
+            table.AddRow(session.Id.ToString(), session.DateStart.ToString(), session.DateEnd.ToString(), $"{TimeSpan.Parse(session.Duration).Hours} hours {TimeSpan.Parse(session.Duration).Minutes} minutes");
         }
 
         AnsiConsole.Write(table);
@@ -185,6 +182,7 @@ internal class UserInterface
         var dateInputs = GetDateInputs();
         session.DateStart = dateInputs[0];
         session.DateEnd = dateInputs[1];
+        session.CalculateDuration();
 
         var dataAccess = new DataAccess();
         dataAccess.InsertSession(session);
@@ -214,8 +212,9 @@ internal class UserInterface
             CodingSession session = new()
             {
                 DateStart = startTime,
-                DateEnd = endTime
+                DateEnd = endTime,
             };
+            session.CalculateDuration();
 
             var dataAccess = new DataAccess();
             dataAccess.InsertSession(session);

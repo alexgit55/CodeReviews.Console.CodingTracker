@@ -7,25 +7,28 @@ internal static class SeedData
     internal static void SeedRecords(int count)
     {
         Random random = new();
-        DateTime currentDate = DateTime.Now.Date; // Start with today's date
+        DateTime currentDate = new(2024, 1, 1);
 
         List<CodingSession> sessions = new List<CodingSession>();
 
         for (int i = 1; i <= count; i++)
         {
             DateTime startDate = currentDate.AddHours(random.Next(13));
-            DateTime endDate = startDate.AddHours(random.Next(13));
+            DateTime endDate = startDate.AddHours(random.Next(1,13));
 
-            sessions.Add(new CodingSession
+            var session = new CodingSession
             {
                 Id = i,
                 DateStart = startDate,
                 DateEnd = endDate,
-            });
+            };
+            session.CalculateDuration();
+
+            sessions.Add(session);
 
             // Increment the date for the next record
-            currentDate = currentDate.AddDays(1);
-        }
+            currentDate = currentDate.AddDays(5);
+        }           
 
         var dataAccess = new DataAccess();
         dataAccess.BulkInsertSessions(sessions);

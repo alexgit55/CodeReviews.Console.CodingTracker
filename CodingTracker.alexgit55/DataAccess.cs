@@ -28,7 +28,8 @@ internal class DataAccess
             CREATE TABLE IF NOT EXISTS sessions (
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
                 DateStart TEXT NOT NULL,
-                DateEnd TEXT NOT NULL
+                DateEnd TEXT NOT NULL,
+                Duration TEXT NOT NULL
             )";
 
             connection.Execute(createTableQuery);
@@ -42,9 +43,9 @@ internal class DataAccess
         {
             connection.Open();
             string insertRecordQuery = @"
-            INSERT INTO sessions (DateStart, DateEnd)
-            VALUES (@DateStart, @DateEnd)";
-            connection.Execute(insertRecordQuery, new { session.DateStart, session.DateEnd });
+            INSERT INTO sessions (DateStart, DateEnd, Duration)
+            VALUES (@DateStart, @DateEnd, @Duration)";
+            connection.Execute(insertRecordQuery, new { session.DateStart, session.DateEnd, session.Duration });
         }
     }
 
@@ -59,10 +60,10 @@ internal class DataAccess
 
             var sessions = connection.Query<CodingSession>(selectQuery);
 
-            foreach (var session in sessions)
+            /*foreach (var session in sessions)
             {
                 session.Duration = session.DateEnd - session.DateStart;
-            }
+            }*/
 
             return sessions;
         }
@@ -77,14 +78,15 @@ internal class DataAccess
 
             // Prepare the query with placeholders for multiple sessions
             string insertQuery = @"
-            INSERT INTO sessions (DateStart, DateEnd)
-            VALUES (@DateStart, @DateEnd)";
+            INSERT INTO sessions (DateStart, DateEnd, Duration)
+            VALUES (@DateStart, @DateEnd, @Duration)";
 
             // Execute the query for each session in the collection
             connection.Execute(insertQuery, sessions.Select(session => new
             {
                 session.DateStart,
-                session.DateEnd
+                session.DateEnd,
+                session.Duration
             }));
         }
     }
@@ -98,10 +100,10 @@ internal class DataAccess
 
             string updateQuery = @"
             UPDATE sessions
-            SET DateStart = @DateStart, DateEnd = @DateEnd
+            SET DateStart = @DateStart, DateEnd = @DateEnd, Duration = @Duration
             WHERE Id = @Id";
 
-            connection.Execute(updateQuery, new { session.DateStart, session.DateEnd, session.Id });
+            connection.Execute(updateQuery, new { session.DateStart, session.DateEnd, session.Duration, session.Id });
         }
     }
 
