@@ -25,6 +25,16 @@ Console based CRUD application to track coding hours. Developed using C# and SQL
 
 - For database interactions we need to use Dapper.
 
+## Challenges
+
+- Add the possibility of tracking the coding time via a stopwatch so the user can track the session as it happens.
+
+- Let the users filter their coding records per period (weeks, days, years) and/or order ascending or descending.
+
+- Create reports where the users can see their total and average coding session per period.
+
+- Create the ability to set coding goals and show how far the users are from reaching their goal, along with how many hours a day they would have to code to reach their goal. You can do it via SQL queries or with C#.
+
 ## Features
 
 - SQLite Database connection using Dapper
@@ -32,3 +42,6 @@ Console based CRUD application to track coding hours. Developed using C# and SQL
 - If no database/table exits when starting the program, it will create one automatically.
 
 ## Console Based UI
+
+- This application features a text based menu and navigation system to access its function
+- It utilizes the Spectre.Console library to generate the main menu and display text and sessions in the program
