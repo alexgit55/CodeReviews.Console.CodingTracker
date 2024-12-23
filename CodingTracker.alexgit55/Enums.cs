@@ -15,6 +15,9 @@ internal class Enums
         [Description("View Sessions")]
         ViewSessions,
 
+        [Description("View Stats")]
+        ViewStats,
+
         [Description("Start Coding Session")]
         StartSession,
 
@@ -25,5 +28,26 @@ internal class Enums
         UpdateSession,
 
         Exit
+    }
+
+    internal enum  TimePeriod
+    {
+        [Description("All")]
+        All,
+
+        [Description("By Day")]
+        ByDay,
+
+        [Description("By Week")]
+        ByWeek,
+
+        [Description("By Month")]
+        ByMonth,
+
+        [Description("By Year")]
+        ByYear,
+
+        [Description("Return to Main Menu")]
+        MainMenu
     }
 }

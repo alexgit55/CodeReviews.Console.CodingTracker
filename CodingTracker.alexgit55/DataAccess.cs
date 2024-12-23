@@ -60,12 +60,17 @@ internal class DataAccess
 
             var sessions = connection.Query<CodingSession>(selectQuery);
 
-            /*foreach (var session in sessions)
-            {
-                session.Duration = session.DateEnd - session.DateStart;
-            }*/
-
             return sessions;
+        }
+    }
+
+    internal IEnumerable<SessionStats> GetSessionStats(string query)
+    {
+        using (var connection = new SqliteConnection(ConnectionString))
+        {
+            connection.Open();
+            var stats = connection.Query<SessionStats>(query);
+            return stats;
         }
     }
 

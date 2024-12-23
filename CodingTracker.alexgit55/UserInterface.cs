@@ -28,6 +28,7 @@ internal class UserInterface
                        MainMenuChoices.AddSession,
                        MainMenuChoices.StartSession,
                        MainMenuChoices.ViewSessions,
+                       MainMenuChoices.ViewStats,
                        MainMenuChoices.UpdateSession,
                        MainMenuChoices.DeleteSession,
                        MainMenuChoices.Exit)
@@ -48,6 +49,10 @@ internal class UserInterface
                     var dataAccess = new DataAccess();
                     var sessions = dataAccess.GetAllSessions();
                     ViewSessions(sessions);
+                    break;
+                case MainMenuChoices.ViewStats:
+                    DisplayHeader("View Session Statistics");
+                    SessionStats();
                     break;
                 case MainMenuChoices.UpdateSession:
                     DisplayHeader("Update a Coding Session");
@@ -172,6 +177,83 @@ internal class UserInterface
         }
 
         AnsiConsole.Write(table);
+    }
+
+    private static void DisplaySessionStats(IEnumerable<SessionStats> sessionStats, Enum TimePeriod)
+    {
+        var table = new Table();
+        table.AddColumn($"{TimePeriod}");
+        table.AddColumn("Total Sessions");
+        table.AddColumn("Average Session Duration");
+        table.AddColumn("Longest Session");
+        table.AddColumn("Total Time (hours)");
+
+        foreach (var stat in sessionStats)
+        {
+            table.AddRow(stat.TimePeriod, 
+                        stat.TotalSessions.ToString(), 
+                        $"{(int)stat.AverageSession} hours {Convert.ToInt32(stat.AverageSession%1*60)} minutes",
+                        $"{TimeSpan.Parse(stat.LongestSession).Hours} hours {TimeSpan.Parse(stat.LongestSession).Minutes} minutes",
+                        $"{(int)stat.TotalTime} hours {Convert.ToInt32(stat.TotalTime % 1 * 60)} minutes");
+        }
+
+        AnsiConsole.Write(table);
+    }
+
+    private static void SessionStats()
+    {
+        DisplayHeader("Session Statistics");
+        var filterChoice = AnsiConsole.Prompt(
+                   new SelectionPrompt<TimePeriod>()
+                    .Title("How do you want to group the sessions?")
+                    .AddChoices(
+                       TimePeriod.All,
+                       TimePeriod.ByDay,
+                       TimePeriod.ByWeek,
+                       TimePeriod.ByMonth,
+                       TimePeriod.ByYear,
+                       TimePeriod.MainMenu
+                       )
+        );
+
+        var dataAccess = new DataAccess();
+        var avgSession= @"AVG(Duration) as 'AverageSession'";
+        var totalSessions = @"COUNT(*) as 'TotalSessions'";
+        var longestSession = @"MAX(Duration) as 'LongestSession'";
+        var TotalTime = @"SUM(Duration) as 'TotalTime'";
+        var timeFilter = "";
+        var tableHeading = "";
+
+        switch (filterChoice)
+        {
+            case TimePeriod.All:
+                timeFilter = "'AllSessions'";
+                tableHeading = "All Sessions";
+                break;
+            case TimePeriod.ByDay:
+                timeFilter = "strftime('%Y-%m-%d', DateStart)";
+                tableHeading="Sessions by Day";
+                break;
+            case TimePeriod.ByWeek:
+                timeFilter = "DATE(DateStart, 'weekday 0', '-6 days')";
+                tableHeading="Sessions by Week";
+                break;
+            case TimePeriod.ByMonth:
+                timeFilter = "strftime('%Y-%m', DateStart)";
+                tableHeading="Sessions by Month";
+                break;
+            case TimePeriod.ByYear:
+                timeFilter = "strftime('%Y', DateStart)";
+                tableHeading="Sessions by Year";
+                break;
+            case TimePeriod.MainMenu:
+                return;
+        }
+
+        DisplayHeader(tableHeading);
+        var allSessionStats = dataAccess.GetSessionStats($@"SELECT {timeFilter} as TimePeriod, {totalSessions}, {avgSession}, {longestSession},{TotalTime} FROM sessions GROUP BY TimePeriod");
+        DisplaySessionStats(allSessionStats, filterChoice);
+
     }
 
     private static void AddSession()
