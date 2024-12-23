@@ -52,7 +52,7 @@ internal class UserInterface
                     break;
                 case MainMenuChoices.ViewStats:
                     DisplayHeader("View Session Statistics");
-                    SessionStats();
+                    ViewSessionStatistics();
                     break;
                 case MainMenuChoices.UpdateSession:
                     DisplayHeader("Update a Coding Session");
@@ -184,15 +184,17 @@ internal class UserInterface
         var table = new Table();
         table.AddColumn($"{TimePeriod}");
         table.AddColumn("Total Sessions");
-        table.AddColumn("Average Session Duration");
+        table.AddColumn("Average Session");
+        table.AddColumn("Shortest Session");
         table.AddColumn("Longest Session");
-        table.AddColumn("Total Time (hours)");
+        table.AddColumn("Total Time");
 
         foreach (var stat in sessionStats)
         {
             table.AddRow(stat.TimePeriod, 
                         stat.TotalSessions.ToString(), 
                         $"{(int)stat.AverageSession} hours {Convert.ToInt32(stat.AverageSession%1*60)} minutes",
+                        $"{TimeSpan.Parse(stat.ShortestSession).Hours} hours {TimeSpan.Parse(stat.ShortestSession).Minutes} minutes",
                         $"{TimeSpan.Parse(stat.LongestSession).Hours} hours {TimeSpan.Parse(stat.LongestSession).Minutes} minutes",
                         $"{(int)stat.TotalTime} hours {Convert.ToInt32(stat.TotalTime % 1 * 60)} minutes");
         }
@@ -200,7 +202,7 @@ internal class UserInterface
         AnsiConsole.Write(table);
     }
 
-    private static void SessionStats()
+    private static void ViewSessionStatistics()
     {
         DisplayHeader("Session Statistics");
         var filterChoice = AnsiConsole.Prompt(
@@ -217,10 +219,6 @@ internal class UserInterface
         );
 
         var dataAccess = new DataAccess();
-        var avgSession= @"AVG(Duration) as 'AverageSession'";
-        var totalSessions = @"COUNT(*) as 'TotalSessions'";
-        var longestSession = @"MAX(Duration) as 'LongestSession'";
-        var TotalTime = @"SUM(Duration) as 'TotalTime'";
         var timeFilter = "";
         var tableHeading = "";
 
@@ -251,7 +249,7 @@ internal class UserInterface
         }
 
         DisplayHeader(tableHeading);
-        var allSessionStats = dataAccess.GetSessionStats($@"SELECT {timeFilter} as TimePeriod, {totalSessions}, {avgSession}, {longestSession},{TotalTime} FROM sessions GROUP BY TimePeriod");
+        var allSessionStats = dataAccess.GetSessionStats(timeFilter);
         DisplaySessionStats(allSessionStats, filterChoice);
 
     }

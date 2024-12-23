@@ -7,6 +7,7 @@
         internal double TotalTime { get; set; }
         internal double AverageSession { get; set; }
         internal string LongestSession { get; set; }
+        internal string ShortestSession { get; set; }
         internal int TotalSessions { get; set; }
     }
 }

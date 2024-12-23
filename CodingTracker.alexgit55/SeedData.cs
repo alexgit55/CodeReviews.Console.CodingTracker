@@ -27,7 +27,7 @@ internal static class SeedData
             sessions.Add(session);
 
             // Increment the date for the next record
-            currentDate = currentDate.AddDays(5);
+            currentDate = currentDate.AddDays(10);
         }           
 
         var dataAccess = new DataAccess();

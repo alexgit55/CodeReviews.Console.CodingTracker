@@ -20,7 +20,7 @@ namespace CodingTracker.alexgit55
 
             dataAccess.CreateDatabase();
 
-            //SeedData.SeedRecords(20);
+            SeedData.SeedRecords(10);
 
             UserInterface.MainMenu();
 

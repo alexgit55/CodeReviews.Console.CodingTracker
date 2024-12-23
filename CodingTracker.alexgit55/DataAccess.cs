@@ -3,6 +3,7 @@
 using Dapper;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
+using static CodingTracker.alexgit55.Enums;
 
 namespace CodingTracker.alexgit55;
 
@@ -64,8 +65,16 @@ internal class DataAccess
         }
     }
 
-    internal IEnumerable<SessionStats> GetSessionStats(string query)
+    internal IEnumerable<SessionStats> GetSessionStats(string timeFilter)
     {
+        var avgSession = @"AVG(Duration) as 'AverageSession'";
+        var totalSessions = @"COUNT(*) as 'TotalSessions'";
+        var longestSession = @"MAX(Duration) as 'LongestSession'";
+        var shortestSession = @"MIN(Duration) as 'ShortestSession'";
+        var TotalTime = @"SUM(Duration) as 'TotalTime'";
+
+        var query = $@"SELECT {timeFilter} as TimePeriod, {totalSessions}, {avgSession}, {shortestSession}, {longestSession}, {TotalTime} FROM sessions GROUP BY TimePeriod";
+
         using (var connection = new SqliteConnection(ConnectionString))
         {
             connection.Open();
