@@ -57,7 +57,6 @@ Console based CRUD application to track coding hours. Developed using C# and SQL
   |:-:|:-:|
   |![First Image](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/ViewSessions.png)|![Second Image](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/AddSession.png)|
   |Update Session|Remove Session|
-  |:-:|:-:|
   |![Third Image](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/UpdateSession.png)|![Fourth](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/DeleteSession.png)|
  
 
