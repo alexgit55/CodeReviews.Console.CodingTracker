@@ -10,7 +10,7 @@ namespace CodingTracker.alexgit55;
 internal class DataAccess
 {
     IConfiguration configuration = new ConfigurationBuilder()
-            .AddJsonFile("C:\\Scripts\\GitHub\\alexgit55\\CodeReviews.Console.CodingTracker\\CodingTracker.alexgit55\\appsettings.json")
+            .AddJsonFile(@"C:\Scripts\GitHub\alexgit55\CodeReviews.Console.CodingTracker\CodingTracker.alexgit55\appsettings.json")
             .Build();
 
     private string ConnectionString;
@@ -66,6 +66,7 @@ internal class DataAccess
     }
 
     internal IEnumerable<SessionStats> GetSessionStats(string timeFilter)
+    // Returns statistics about coding sessions based on the time filter
     {
         var avgSession = @"AVG(Duration) as 'AverageSession'";
         var totalSessions = @"COUNT(*) as 'TotalSessions'";

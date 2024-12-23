@@ -173,13 +173,15 @@ internal class UserInterface
 
         foreach (var session in sessions)
         {
-            table.AddRow(session.Id.ToString(), session.DateStart.ToString(), session.DateEnd.ToString(), $"{TimeSpan.Parse(session.Duration).Hours} hours {TimeSpan.Parse(session.Duration).Minutes} minutes");
+            table.AddRow(session.Id.ToString(), session.DateStart.ToString(), session.DateEnd.ToString(), $"{(int)session.Duration/60} hours {session.Duration%60} minutes");
         }
 
         AnsiConsole.Write(table);
     }
 
     private static void DisplaySessionStats(IEnumerable<SessionStats> sessionStats, Enum TimePeriod)
+    // This method displays session statistics in a table using the Spectre.Console library.
+    // The first column of the table is the time period (e.g., day, week, month, year).
     {
         var table = new Table();
         table.AddColumn($"{TimePeriod}");
@@ -193,16 +195,18 @@ internal class UserInterface
         {
             table.AddRow(stat.TimePeriod, 
                         stat.TotalSessions.ToString(), 
-                        $"{(int)stat.AverageSession} hours {Convert.ToInt32(stat.AverageSession%1*60)} minutes",
-                        $"{TimeSpan.Parse(stat.ShortestSession).Hours} hours {TimeSpan.Parse(stat.ShortestSession).Minutes} minutes",
-                        $"{TimeSpan.Parse(stat.LongestSession).Hours} hours {TimeSpan.Parse(stat.LongestSession).Minutes} minutes",
-                        $"{(int)stat.TotalTime} hours {Convert.ToInt32(stat.TotalTime % 1 * 60)} minutes");
+                        $"{Convert.ToInt32(stat.AverageSession/60)} hours {Convert.ToInt32(stat.AverageSession%60)} minutes",
+                        $"{Convert.ToInt32(stat.ShortestSession / 60)} hours {Convert.ToInt32(stat.ShortestSession % 60)} minutes",
+                        $"{Convert.ToInt32(stat.LongestSession / 60)} hours {Convert.ToInt32(stat.LongestSession % 60)} minutes",
+                        $"{Convert.ToInt32(stat.TotalTime / 60)} hours {Convert.ToInt32(stat.TotalTime % 60)} minutes");
         }
 
         AnsiConsole.Write(table);
     }
 
     private static void ViewSessionStatistics()
+    // This method allows the user to view session statistics grouped by different time periods (e.g., day, week, month, year).
+    // The user can select a time period and that will change the query to group the sessions accordingly.
     {
         DisplayHeader("Session Statistics");
         var filterChoice = AnsiConsole.Prompt(
@@ -249,8 +253,8 @@ internal class UserInterface
         }
 
         DisplayHeader(tableHeading);
-        var allSessionStats = dataAccess.GetSessionStats(timeFilter);
-        DisplaySessionStats(allSessionStats, filterChoice);
+        var sessionStats = dataAccess.GetSessionStats(timeFilter);
+        DisplaySessionStats(sessionStats, filterChoice);
 
     }
 
@@ -259,13 +263,23 @@ internal class UserInterface
     {
         CodingSession session = new();
 
-        var dateInputs = GetDateInputs();
-        session.DateStart = dateInputs[0];
-        session.DateEnd = dateInputs[1];
-        session.CalculateDuration();
+        try
+        {
+            var dateInputs = GetDateInputs();
+            session.DateStart = dateInputs[0];
+            session.DateEnd = dateInputs[1];
+            session.CalculateDuration();
 
-        var dataAccess = new DataAccess();
-        dataAccess.InsertSession(session);
+            var dataAccess = new DataAccess();
+            dataAccess.InsertSession(session);
+            AnsiConsole.MarkupLine("\n[green]Session added successfully.[/]\n");
+        }
+        catch (Exception ex)
+        {
+            AnsiConsole.MarkupLine($"\n[red]{ex.Message}\n");
+        }
+
+
     }
 
     private static void StartSession()
