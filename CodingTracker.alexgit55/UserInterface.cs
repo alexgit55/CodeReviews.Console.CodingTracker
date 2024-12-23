@@ -288,7 +288,7 @@ internal class UserInterface
     {
         AnsiConsole.MarkupLine("This will start a live coding session and will record the total time afterwards.\n");
 
-        if (AnsiConsole.Prompt(new ConfirmationPrompt("Are you ready to star a new session?")))
+        if (AnsiConsole.Prompt(new ConfirmationPrompt("Are you ready to start a new session?")))
         {
             var continueSession = true;
             var startTime = DateTime.Now;
