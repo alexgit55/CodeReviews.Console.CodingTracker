@@ -10,7 +10,7 @@ namespace CodingTracker.alexgit55;
 internal class DataAccess
 {
     IConfiguration configuration = new ConfigurationBuilder()
-            .AddJsonFile(@"C:\Scripts\GitHub\alexgit55\CodeReviews.Console.CodingTracker\CodingTracker.alexgit55\appsettings.json")
+            .AddJsonFile("appsettings.json")
             .Build();
 
     private string ConnectionString;
