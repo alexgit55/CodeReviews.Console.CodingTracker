@@ -3,7 +3,6 @@
 using Dapper;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
-using static CodingTracker.alexgit55.Enums;
 
 namespace CodingTracker.alexgit55;
 

@@ -6,8 +6,6 @@
     The program uses the Microsoft.Extensions.Configuration library to read the connection string from the appsettings.json file
 */
 
-using Microsoft.Extensions.Configuration;
-
 namespace CodingTracker.alexgit55
 {
     internal class Program

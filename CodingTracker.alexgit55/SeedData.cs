@@ -14,7 +14,7 @@ internal static class SeedData
         for (int i = 1; i <= count; i++)
         {
             DateTime startDate = currentDate.AddHours(random.Next(13));
-            DateTime endDate = startDate.AddHours(random.Next(1,13));
+            DateTime endDate = startDate.AddHours(random.Next(1, 13));
 
             var session = new CodingSession
             {
@@ -28,7 +28,7 @@ internal static class SeedData
 
             // Increment the date for the next record
             currentDate = currentDate.AddDays(10);
-        }           
+        }
 
         var dataAccess = new DataAccess();
         dataAccess.BulkInsertSessions(sessions);

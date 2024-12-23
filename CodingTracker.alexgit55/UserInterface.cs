@@ -17,7 +17,7 @@ internal class UserInterface
 
         while (isMenuRunning)
         {
-            
+
             DisplayHeader("Welcome to the Coding Tracker!");
 
 
@@ -74,7 +74,7 @@ internal class UserInterface
             Console.Clear();
         }
     }
-    
+
     private static void DisplayHeader(string message)
     // This method displays a header with a message using the Spectre.Console library.
     {
@@ -173,7 +173,7 @@ internal class UserInterface
 
         foreach (var session in sessions)
         {
-            table.AddRow(session.Id.ToString(), session.DateStart.ToString(), session.DateEnd.ToString(), $"{(int)session.Duration/60} hours {session.Duration%60} minutes");
+            table.AddRow(session.Id.ToString(), session.DateStart.ToString(), session.DateEnd.ToString(), $"{(int)session.Duration / 60} hours {session.Duration % 60} minutes");
         }
 
         AnsiConsole.Write(table);
@@ -193,9 +193,9 @@ internal class UserInterface
 
         foreach (var stat in sessionStats)
         {
-            table.AddRow(stat.TimePeriod, 
-                        stat.TotalSessions.ToString(), 
-                        $"{Convert.ToInt32(stat.AverageSession/60)} hours {Convert.ToInt32(stat.AverageSession%60)} minutes",
+            table.AddRow(stat.TimePeriod,
+                        stat.TotalSessions.ToString(),
+                        $"{Convert.ToInt32(stat.AverageSession / 60)} hours {Convert.ToInt32(stat.AverageSession % 60)} minutes",
                         $"{Convert.ToInt32(stat.ShortestSession / 60)} hours {Convert.ToInt32(stat.ShortestSession % 60)} minutes",
                         $"{Convert.ToInt32(stat.LongestSession / 60)} hours {Convert.ToInt32(stat.LongestSession % 60)} minutes",
                         $"{Convert.ToInt32(stat.TotalTime / 60)} hours {Convert.ToInt32(stat.TotalTime % 60)} minutes");
@@ -234,19 +234,19 @@ internal class UserInterface
                 break;
             case TimePeriod.ByDay:
                 timeFilter = "strftime('%Y-%m-%d', DateStart)";
-                tableHeading="Sessions by Day";
+                tableHeading = "Sessions by Day";
                 break;
             case TimePeriod.ByWeek:
                 timeFilter = "DATE(DateStart, 'weekday 0', '-6 days')";
-                tableHeading="Sessions by Week";
+                tableHeading = "Sessions by Week";
                 break;
             case TimePeriod.ByMonth:
                 timeFilter = "strftime('%Y-%m', DateStart)";
-                tableHeading="Sessions by Month";
+                tableHeading = "Sessions by Month";
                 break;
             case TimePeriod.ByYear:
                 timeFilter = "strftime('%Y', DateStart)";
-                tableHeading="Sessions by Year";
+                tableHeading = "Sessions by Year";
                 break;
             case TimePeriod.MainMenu:
                 return;
