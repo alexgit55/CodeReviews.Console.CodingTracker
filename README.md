@@ -27,13 +27,13 @@ Console based CRUD application to track coding hours. Developed using C# and SQL
 
 ## Challenges
 
-- Add the possibility of tracking the coding time via a stopwatch so the user can track the session as it happens.
+- Add the possibility of tracking the coding time via a stopwatch so the user can track the session as it happens. (Completed)
 
-- Let the users filter their coding records per period (weeks, days, years) and/or order ascending or descending.
+- Let the users filter their coding records per period (weeks, days, years) and/or order ascending or descending. (TBD)
 
-- Create reports where the users can see their total and average coding session per period.
+- Create reports where the users can see their total and average coding session per period. (Completed)
 
-- Create the ability to set coding goals and show how far the users are from reaching their goal, along with how many hours a day they would have to code to reach their goal. You can do it via SQL queries or with C#.
+- Create the ability to set coding goals and show how far the users are from reaching their goal, along with how many hours a day they would have to code to reach their goal. You can do it via SQL queries or with C#. (TBD)
 
 ## Features
 
@@ -45,3 +45,20 @@ Console based CRUD application to track coding hours. Developed using C# and SQL
 
 - This application features a text based menu and navigation system to access its function
 - It utilizes the Spectre.Console library to generate the main menu and display text and sessions in the program
+- ![Screenshot of the main menu of the application.](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/MainMenu.png)
+
+## CRUD DB Functions
+
+- This application offers CRUD operations (Create, Read, Update, Delete) for any session entered
+- The date and coding times need to be in dd-mm-yy hh:mm (24 hour clock) format
+- The end date must be a later time than the start date
+- Here are screenshots from some of the various operations
+  |View Sessions|Add Session|
+  |:-:|:-:|
+  |![First Image](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/ViewSessions.png)|![Second Image](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/AddSession.png)|
+  |Update Session|Remove Session|
+  |:-:|:-:|
+  |![Third Image](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/UpdateSession.png)|![Fourth](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/DeleteSession.png)|
+ 
+
+  
