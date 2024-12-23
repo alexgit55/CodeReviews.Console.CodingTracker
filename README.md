@@ -68,6 +68,7 @@ Console based CRUD application to track coding hours. Developed using C# and SQL
 
 - The program offers the ability the view stats about coding sessions over a time period (day, week, month, year or all)
 - The stats are the total sessions, the average duration, the shortest duration, the longest duration and the total duration across the time period
+  
  |Filter Menu|Example Filter View|
  |:-:|:-:|
  |![Filter Menu](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/SessionStatsFilter.png)|![Example Filter by Month](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/SessionStatsByMonth.png)|
