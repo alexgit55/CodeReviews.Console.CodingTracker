@@ -12,7 +12,6 @@ internal class Enums
         StartSession,
         DeleteSession,
         UpdateSession,
-
         Exit
     }
 
