@@ -43,21 +43,33 @@ Console based CRUD application to track coding hours. Developed using C# and SQL
 
 ## Console Based UI
 
-- This application features a text based menu and navigation system to access its function
+- This program features a text based menu and navigation system to access its function
 - It utilizes the Spectre.Console library to generate the main menu and display text and sessions in the program
-- ![Screenshot of the main menu of the application.](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/MainMenu.png)
+  ![Screenshot of the main menu of the application.](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/MainMenu.png)
 
 ## CRUD DB Functions
 
-- This application offers CRUD operations (Create, Read, Update, Delete) for any session entered
+- This program offers CRUD operations (Create, Read, Update, Delete) for any session entered
 - The date and coding times need to be in dd-mm-yy hh:mm (24 hour clock) format
 - The end date must be a later time than the start date
 - Here are screenshots from some of the various operations
   |View Sessions|Add Session|
   |:-:|:-:|
-  |![First Image](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/ViewSessions.png)|![Second Image](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/AddSession.png)|
+  |![Add a coding session](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/ViewSessions.png)|![View coding sessions](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/AddSession.png)|
   |Update Session|Remove Session|
-  |![Third Image](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/UpdateSession.png)|![Fourth](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/DeleteSession.png)|
- 
+  |![Update a coding session](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/UpdateSession.png)|![Remove a coding session](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/DeleteSession.png)|
+
+## Live Coding Session
+
+- This program features the ability to start a stopwatch for a live coding session
+![Start a new coding session](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/StartSession.png)
+
+## Session Statistics
+
+- The program offers the ability the view stats about coding sessions over a time period (day, week, month, year or all)
+- The stats are the total sessions, the average duration, the shortest duration, the longest duration and the total duration across the time period
+ |Filter Menu|Example Filter View|
+ |:-:|:-:|
+ |![Filter Menu](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/SessionStatsFilter.png)|![Example Filter by Month](https://rvnprojectstorage.blob.core.windows.net/images/Console.CodingTracker/SessionStatsByMonth.png)|
 
   
